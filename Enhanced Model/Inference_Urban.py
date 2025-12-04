@@ -4,15 +4,11 @@ import pandas as pd
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader, random_split
 import os
-from google.colab import drive
 
-
-# Mount drive
-drive.mount('/content/drive')
-
-# Paths
-annotation = "/content/drive/MyDrive/UrbanSound8K/metadata/UrbanSound8K.csv"
-audio_dir = "/content/drive/MyDrive/UrbanSound8K/audio"
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
+annotation = r"C:\Users\Nikhil Pathak\OneDrive\Desktop\Deep Learning\Urban-sound-model\UrbanSound8K.csv"
+audio_dir = r"C:\Users\Nikhil Pathak\OneDrive\Desktop\Deep Learning\Urban-sound-model\UrbanSound8K\audio"
 
 
 class AudioDataset(Dataset):
@@ -72,9 +68,6 @@ class AudioDataset(Dataset):
         return self.annotation.iloc[index, 6]
 
 
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {device}")
 
 # Audio parameters
 sample_rate = 22050
@@ -361,4 +354,3 @@ input,target = usd[50][0] , usd[50][1]
 input.unsqueeze_(0)
 predicted,expected = predict(model,input,target,class_mapping)
 print(f"The expected output is: {expected}, and the predicted is: {predicted}")
-
